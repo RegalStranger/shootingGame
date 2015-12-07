@@ -21,8 +21,7 @@ public class BulletBase : PrimBase{
     * 共通で必要な情報
     **************************************************/
     public bool enable;     //!< 挙動許可
-    public float damage;    //!< ダメージ量
-    public float speed;     //!< 移動速度
+    public PlayerBulletType type;
 
     /// <summary>
     /// 敵の弾丸角度データを作成

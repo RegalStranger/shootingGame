@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -59,8 +60,9 @@ public class Player : CharBase {
     private float maxHp = 0f;
     private float beforeScore = 0f;
     private float optionGaugeDownVal = 0.8f;                            //!< オプションゲージを下げる値
-    private List<GameObject> bullet = new List<GameObject>();           //!< 弾リスト
     private List<GameObject> playerOption = new List<GameObject>();     //!< オプションリスト
+    private Dictionary<PlayerBulletType, List<GameObject>> bulletTable = new Dictionary<PlayerBulletType, List<GameObject>>();
+    private PlayerBulletType nowBulletType = PlayerBulletType.THREE_WAY;
 
     public override void Start() {
         base.Start();
@@ -92,11 +94,6 @@ public class Player : CharBase {
         parent.PlayerOptGauge.maxValue = 100 + ((YkSys.playerParam.playerEnhanceShotSpeedPt > 0 ? (int)YkSys.playerParam.playerEnhanceShotSpeedPt : 1) * 10);
         OptionGauge = parent.PlayerOptGauge.value = parent.PlayerOptGauge.maxValue;
         bombGauge = 100 + ((YkSys.playerParam.playerEnhanceShotSpeedPt > 0 ? (int)YkSys.playerParam.playerEnhanceShotSpeedPt : 1) * 10);
-
-        // 弾丸を一部作成
-        for (int i = 0; i < 10; i++) {
-            CreateBullet(false);
-        }
     }
 
     void Update() {
@@ -111,6 +108,14 @@ public class Player : CharBase {
                 Shot();
                 timer = 0;
             }
+
+            // 弾切り替え
+            if (Input.GetKeyDown(KeyCode.LeftControl) && timer > 0) {
+                nowBulletType += 1;
+                if (nowBulletType == PlayerBulletType.TWO_WAY) nowBulletType = PlayerBulletType.WIDE_WAY;
+                if (nowBulletType > PlayerBulletType.SHELL) nowBulletType = PlayerBulletType.THREE_WAY;
+            }
+
             timer += Time.deltaTime;
 
             // レーザー撃ち
@@ -157,14 +162,19 @@ public class Player : CharBase {
     }
 
     void CreateBullet(bool bulletEnable = true) {
-        GameObject obj = CommonUtil.PrefabInstance(bulletPrefab, this.transform);
+        GameObject obj = CommonUtil.PrefabInstance(PlayerBulletMaster.playerBulletTable[this.nowBulletType].PleyerBulletPrefub, this.transform);
         if (obj != null) {
             Vector3 pos = this.transform.position;
             pos.y += setBulletPosY;
             obj.transform.position = pos;
             parent.bgmSound.ChangeVolume(OPTION.SEVolume, true);
-            bullet.Add(obj);
+            if (!bulletTable.ContainsKey(nowBulletType)) {
+                bulletTable.Add(nowBulletType, new List<GameObject>() { obj });
+            } else {
+                bulletTable[nowBulletType].Add(obj);
+            }
             obj.SetActive(bulletEnable);
+            obj.transform.parent = parent.playerBullet[(int)nowBulletType].transform;
         }
     }
 
@@ -246,16 +256,15 @@ public class Player : CharBase {
     /// </summary>
     /// <returns>bool</returns>
     private bool CheckActiveBullet() {
-        if (bullet.Count <= 0) return true;
-        bool active = bullet.FindAll(act => act.activeSelf == true).Count == bullet.Count;
-        return active;
+        if (!bulletTable.ContainsKey(nowBulletType)) return true;
+        return bulletTable[nowBulletType].FindAll(act => act.activeSelf == true).Count == bulletTable[nowBulletType].Count;
     }
 
     /// <summary>
     /// 弾丸を起こす
     /// </summary>
     void AwakeBullet() {
-        GameObject obj = bullet.Find(act => act.activeSelf == false);
+        GameObject obj = bulletTable[nowBulletType].Find(act => act.activeSelf == false && act.GetComponent<PlayerBulletBase>().type == nowBulletType);
         Vector3 pos = this.transform.position;
         pos.y += setBulletPosY;
         obj.transform.position = pos;

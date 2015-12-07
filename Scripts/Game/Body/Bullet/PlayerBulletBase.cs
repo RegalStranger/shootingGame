@@ -8,15 +8,11 @@ public class PlayerBulletBase : BulletBase {
 
     public override void Start() {
         enable = true;
-        damage = 5f;
-        speed = 10f;
     }
 
 	void Update () {
         if (YkSys.Pose) {
-            if (!base.CheckBulletEnable(bulletList)) {
-                this.gameObject.SetActive(false);
-            }
+            SetStopBullet();
         }
 	}
 
@@ -31,5 +27,9 @@ public class PlayerBulletBase : BulletBase {
         if (!base.CheckBulletEnable(bulletList)) {
             this.gameObject.SetActive(false);
         }
+    }
+
+    public bool GetUnenableTag(string tag) {
+        return tag == "Enemy" || tag == "Wall" || tag == "Boss";
     }
 }

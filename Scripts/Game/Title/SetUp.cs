@@ -36,13 +36,11 @@ public class SetUp : MonoBehaviour
     /// </summary>
     private ToggleStar m_SelectedStar = null;
     private bool changeSelectStar = false;
-    private bool onceSelect = false;
     public bool OnClickStar(ToggleStar obj) {
         if (changeSelectStar) {
             if (enhanceObject.useEnhancePoint <= 0 && m_SelectedStar.name != obj.name && m_SelectedStar.GetMyId() <= obj.GetMyId()) {
                 return false;
             }
-            onceSelect = true;
         }
 
         // 設定された星に合わせる

@@ -51,6 +51,7 @@ public class YkSys : CommonSys {
         BulletBase.CreateEnemyBulletGroupData();
         BulletBase.CreateEnemyBulletRadData();
         DirectionData.CreateBezierDirectionData();
+        PlayerBulletMaster.CreatePlayerMasterData();
 
         // 通常敵AIデータを読み込む
         EnemyFactory.CreateNormalEnemyAiData();

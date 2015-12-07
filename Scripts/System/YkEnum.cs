@@ -199,3 +199,11 @@ public enum NumberType
     DOUBLE,
     LONG,
 }
+
+public enum PlayerBulletType
+{
+    THREE_WAY,
+    TWO_WAY,
+    WIDE_WAY,
+    SHELL,
+}

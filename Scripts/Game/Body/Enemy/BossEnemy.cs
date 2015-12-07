@@ -109,7 +109,7 @@ public class BossEnemy : CharBase {
     void OnTriggerEnter2D(Collider2D col2) {
         // プレイヤーの弾に当たったらダメージ処理
         if (col2.tag == "PlayerBullet" && !beginRetreatFlag) {
-            hp -= col2.transform.parent.gameObject.GetComponent<PlayerBulletBase>().damage;
+            hp -= col2.GetComponent<IPlayerBulletCommand>().Damage;
             hpSlider.value = hp;
             flash = true;
         }

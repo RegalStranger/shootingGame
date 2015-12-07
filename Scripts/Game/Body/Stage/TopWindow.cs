@@ -26,6 +26,7 @@ public class TopWindow : YkSys{
     public Text scoreText;              //!< スコアを表示
     public Image stageName;             //!< ステージ名
     public CommonSoundForCri bgmSound;
+    public List<GameObject> playerBullet = new List<GameObject>();
 
     public ScenarioPatternType scenarioState = ScenarioPatternType.START; //!< シナリオの状態
 
@@ -139,6 +140,8 @@ public class TopWindow : YkSys{
     /// シナリオ読み込み命令
     /// </summary>
     private void CommandReadScenario() {
+        return;
+        /*
         // 既に読んでいたら返す
         if (GetScenarioData(scenarioState).IsRead) return;
         
@@ -158,6 +161,7 @@ public class TopWindow : YkSys{
                 StartAnim.SetBool("Boss", true);
                 break;
         }
+        */
     }
 
     /// <summary>
