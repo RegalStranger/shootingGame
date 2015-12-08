@@ -36,7 +36,7 @@ public class YkSys : CommonSys {
         // ステージ状態をセット
         nowStage += 1;
         if (Application.loadedLevelName == Data.d_StageNameList[1]) nowStage = Stage.title;
-        if (debug) nowStage = Stage.stage1;
+        if (debug || nowStage == Stage.opening) nowStage = Stage.stage1;
 
         // シナリオデータを読み込む(正直、都度読み込む方が都合が良いけれども今回読み込む量はそんなに多くないはずなのでスタックしてしまう)
         if (scenarioData.Count <= 0) {
