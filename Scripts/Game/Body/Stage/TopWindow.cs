@@ -26,7 +26,6 @@ public class TopWindow : YkSys{
     public Text scoreText;              //!< スコアを表示
     public Image stageName;             //!< ステージ名
     public CommonSoundForCri bgmSound;
-    public List<GameObject> playerBullet = new List<GameObject>();
 
     public ScenarioPatternType scenarioState = ScenarioPatternType.START; //!< シナリオの状態
 
@@ -61,7 +60,7 @@ public class TopWindow : YkSys{
         else {
             scenarioObject.SetActive(false);
         }
-
+        stopEscKey = true;
     }
 
     void Update() {
@@ -74,13 +73,14 @@ public class TopWindow : YkSys{
             }
 
             if (stopEscKey) {
+                /*
                 // マウスを押している間、読む速度上昇
                 if (Input.GetKey(KeyCode.C) || Input.GetMouseButton(0)) {
                     scenario.OnClickDisplay();
                 }
                 // シナリオ読み出し
                 Pose = scenario.ReadScenarioText();
-
+                */
                 // ポーズが解けたらシナリオ用オブジェクト停止してゲームをスタート
                 if (Pose) {
                     stopEscKey = false;
@@ -113,7 +113,7 @@ public class TopWindow : YkSys{
 
             // ボスシナリオフラグ
             if (!stopEscKey && boss && !scenarioSkip) {
-                CommandReadScenario();
+                stopEscKey = true;
             }
             // シナリオがスキップされている場合はクリアフラグだけ立てる
             else if (boss && scenarioSkip) {
@@ -122,7 +122,7 @@ public class TopWindow : YkSys{
 
             // 勝利シナリオへ
             if (!stopEscKey && win) {
-                CommandReadScenario();
+                stopEscKey = true;
             }
 
             // クリアしたらリザルトを表示
