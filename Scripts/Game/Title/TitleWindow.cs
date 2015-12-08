@@ -77,13 +77,8 @@ public class TitleWindow : YkSys {
     /// </summary>
     public void OnClickGoPlay() {
         SoundButton(Data.d_SoundEffect[SoundEffectType.TITLE_BUTTON]);
-        // オープニングへ移動
-        if (scenarioSkip) {
-            Application.LoadLevel(1);
-        } else {
-        // シナリオがスキップされている場合はそのままステージへ
-            Application.LoadLevel(2);
-        }
+        // そのままゲーム画面に飛ばす
+        Application.LoadLevel(1);
     }
 
     /// <summary>
