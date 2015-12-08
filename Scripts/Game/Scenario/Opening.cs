@@ -16,7 +16,7 @@ public class Opening : YkSys {
 
     public override void Awake() {
         base.Awake();
-        if (debug) nowStage = Stage.opening;
+//        if (debug) nowStage = Stage.opening;
         read = new ReadScenario(GetScenarioData(ScenarioPatternType.OPENING).Scenario, scenarioObj, bgmSound);
 
         // 音量を設定
