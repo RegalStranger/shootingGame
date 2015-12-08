@@ -21,6 +21,9 @@ public class Player : CharBase {
     [SerializeField]
     bool muteki = false;
 
+    [SerializeField]
+    List<GameObject> playerBullet = new List<GameObject>();
+
 
     private const string UI_FULL_HP = "ui_stage_16";
     private const string UI_CAUTION_HP = "ui_stage_18";
@@ -110,7 +113,7 @@ public class Player : CharBase {
             }
 
             // 弾切り替え
-            if (Input.GetKeyDown(KeyCode.LeftControl) && timer > 0) {
+            if (Input.GetKeyDown(KeyCode.LeftControl)) {
                 nowBulletType += 1;
                 if (nowBulletType == PlayerBulletType.TWO_WAY) nowBulletType = PlayerBulletType.WIDE_WAY;
                 if (nowBulletType > PlayerBulletType.SHELL) nowBulletType = PlayerBulletType.THREE_WAY;
@@ -174,7 +177,7 @@ public class Player : CharBase {
                 bulletTable[nowBulletType].Add(obj);
             }
             obj.SetActive(bulletEnable);
-            obj.transform.parent = parent.playerBullet[(int)nowBulletType].transform;
+            obj.transform.parent = playerBullet[(int)nowBulletType].transform;
         }
     }
 
